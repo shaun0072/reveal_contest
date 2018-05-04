@@ -96,6 +96,7 @@ function nextQuestion() {
     }
 
     var nextBtn = $('<button>', {
+      class: "next",
       text: 'Next',
       onclick: "nextQuestion()"
     })
@@ -108,3 +109,11 @@ function nextQuestion() {
   }
 }
 nextQuestion();
+
+$('.next').on("click", function() {
+  console.log("test");
+  if($('.answer').attr("type") === "radio") {
+    var key = $('input:checked').attr('name');
+    answers[key] = $('input:checked').val()
+  }
+})
