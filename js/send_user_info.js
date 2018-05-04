@@ -11,7 +11,7 @@ function send_user_info() {
       name: name,
       phone : phone,
       gender: gender
-    }
+    },
     success: function(response) {
       console.log(response.name);
     }

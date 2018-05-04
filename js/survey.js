@@ -5,7 +5,7 @@ var url_string = window.location.href;
 var url = new URL(url_string);
 var user_id = url.searchParams.get("user_id");
 
-var answers = {};
+var answers = {"user_id": user_id};
 
 var surveyQuestions = [
   {
@@ -71,8 +71,22 @@ var counter = 0;
 
 function nextQuestion() {
 
+  //add answer for radio
+  if($('.answer').attr("type") === "radio") {
+    var key = $('input:checked').attr('name');
+    answers[key] = $('input:checked').val()
+  }
+
+  //add answer for fill-in
+  if($('.answer').attr("type") === "text") {
+    var key = $('input').attr('name');
+    answers[key] = $('input').val()
+  }
+
+  //empty current question
   $('.survey_cont').empty();
 
+  //check if more questions
   if(counter < surveyQuestions.length) {
     var options = $('<div>');
 
@@ -81,6 +95,7 @@ function nextQuestion() {
       text: surveyQuestions[counter].q
     });
 
+    //add multiple choice
     for(var i = 0; i < surveyQuestions[counter].a.choice.length; i++) {
       var label = $('<label>', {
         text: surveyQuestions[counter].a.choice[i]
@@ -101,19 +116,38 @@ function nextQuestion() {
       onclick: "nextQuestion()"
     })
 
-
-
     $('.survey_cont').append(question, options, nextBtn);
 
-     counter++;
   }
-}
-nextQuestion();
 
-$('.next').on("click", function() {
-  console.log("test");
-  if($('.answer').attr("type") === "radio") {
-    var key = $('input:checked').attr('name');
-    answers[key] = $('input:checked').val()
+  //check if no more surveyQuestions
+  if(counter === surveyQuestions.length) {
+    var submitAnswers = $('<button>', {
+      class: "submit",
+      text: 'Submit Answers',
+      onclick: "submitAnswers()"
+    });
+
+    $('.survey_cont').append(submitAnswers);
+
   }
-})
+
+  counter++;
+}
+function submitAnswers() {
+
+  //send answers
+  $.ajax({
+    url:"./php/answers_handler.php",
+    method:"POST",
+    dataType: 'json',
+    data: answers,
+    complete: function(response) {
+      console.log(response);
+    }
+   });
+}
+
+
+
+nextQuestion();
