@@ -8,7 +8,7 @@ CREATE TABLE survey (
   mothers_bw VARCHAR(16),
   fathers_bw VARCHAR(16),
   babys_weight VARCHAR(16),
-  mothers_cravings VARCHAR(16),
+  mothers_cravings VARCHAR(50),
   mothers_weight TINYINT UNSIGNED,
   fathers_weight TINYINT UNSIGNED,
   gender TINYINT(1) UNSIGNED

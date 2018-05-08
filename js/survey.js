@@ -12,40 +12,50 @@ var surveyQuestions = [
     q: "Guess the baby's heartbeat at 19 weeks",
     a: {
       type: "radio",
-      choice: ["110 - 125", "125 - 140", "140 - 155", "155 - 170"]
+      choice: ["110 - 125", "125 - 140", "140 - 155", "155 - 170"],
+      a: "110 - 125"
     },
+    p: 20,
     db: "last_hb"
   },
   {
-    q: "Guess the mother's birth weight",
+    q: "Guess the mothers birth weight",
     a: {
       type: "radio",
-      choice: ["6lbs", "7lbs", "8lbs", "9lbs"]
+      choice: ["6lbs", "7lbs", "8lbs", "9lbs"],
+      a: "6lbs"
     },
+    p: 20,
     db:"mothers_bw"
   },
   {
     q: "Guess the father's birth weight",
     a: {
       type: "radio",
-      choice: ["5lbs", "6lbs", "7lbs", "8lbs"]
+      choice: ["5lbs", "6lbs", "7lbs", "8lbs"],
+      a: "6lbs"
     },
+    p: 20,
     db: "fathers_bw"
   },
   {
     q: "Guess the baby's weight at 19 weeks",
     a: {
       type: "radio",
-      choice: ["4oz", "5oz", "6oz", "7oz"]
+      choice: ["4oz", "5oz", "6oz", "7oz"],
+      a: "4oz"
     },
+    p: 20,
     db: "babys_weight"
   },
   {
     q: "What are the Chanel's cravings",
     a: {
       type: "radio",
-      choice: ["oranges and rare steak", "pickles and peanut butter", "Toilet Paper and Salmon", "none"]
+      choice: ["oranges and rare steak", "pickles and peanut butter", "Toilet Paper and Salmon", "none"],
+      a: "oranges and rare steak"
     },
+    p: 20,
     db:"mothers_cravings"
   },
   {
@@ -135,7 +145,7 @@ function nextQuestion() {
   counter++;
 }
 function submitAnswers() {
-
+  console.log(answers);
   //send answers
   $.ajax({
     url:"./php/answers_handler.php",

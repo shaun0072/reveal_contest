@@ -1,7 +1,7 @@
 function send_user_info() {
   var name = $('input[name="name"]').val(),
       phone = $('input[name="phone"]').val(),
-      gender = $('input[name="gender"]').val();
+      gender = $('input[name="gender"]:checked').val();
 
   $.ajax({
     url:"./php/user_info_handler.php",
@@ -12,8 +12,8 @@ function send_user_info() {
       phone : phone,
       gender: gender
     },
-    success: function(response) {
-      console.log(response.name);
-    }
+    complete: function(response) {
+      console.log(response);
+    },
    });
 }
