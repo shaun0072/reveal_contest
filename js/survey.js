@@ -61,17 +61,19 @@ var surveyQuestions = [
   {
     q: "Guess the mother's current weight",
     a: {
-      type: "text",
-      choice: ["lbs"]
+      type: "number",
+      a: "105"
     },
+    p: 40,
     db:"mothers_weight"
   },
   {
     q: "Guess the father's current weight",
     a: {
-      type: "text",
-      choice: ['lbs']
+      type: "number",
+      a: "197"
     },
+    p: 40,
     db:"fathers_weight"
   }
 ]
@@ -88,7 +90,7 @@ function nextQuestion() {
   }
 
   //add answer for fill-in
-  if($('.answer').attr("type") === "text") {
+  if($('.answer').attr("type") === "number") {
     var key = $('input').attr('name');
     answers[key] = $('input').val()
   }
@@ -100,28 +102,48 @@ function nextQuestion() {
   if(counter < surveyQuestions.length) {
     var options = $('<div>');
 
-    var question = $('<p>', {
+    var question = $('<h4>', {
       class: "question",
       text: surveyQuestions[counter].q
     });
 
     //add multiple choice
-    for(var i = 0; i < surveyQuestions[counter].a.choice.length; i++) {
-      var label = $('<label>', {
-        text: surveyQuestions[counter].a.choice[i]
-      })
+    var br = $('<br />');
+    var answer;
+    if(surveyQuestions[counter].a.type === "radio") {
+      for(var i = 0; i < surveyQuestions[counter].a.choice.length; i++) {
+        var container = $('<div>', {
+          class: "form-check"
+        });
 
+        var label = $('<label>', {
+          text: surveyQuestions[counter].a.choice[i],
+          class: "form-check-label"
+        })
+
+        answer = $('<input>', {
+          type: surveyQuestions[counter].a.type,
+          class: "answer form-check-input",
+          value : surveyQuestions[counter].a.choice[i],
+          name: surveyQuestions[counter].db
+        });
+
+        container.append(answer,label);
+        options.append(container);
+      }
+    } else {
       var answer = $('<input>', {
         type: surveyQuestions[counter].a.type,
-        class: "answer",
-        value : surveyQuestions[counter].a.choice[i],
+        class: "answer radio",
         name: surveyQuestions[counter].db
       });
-      options.append(answer, label)
+
+      options.append(answer, br);
     }
 
+
     var nextBtn = $('<button>', {
-      class: "next",
+      class: "next btn btn-primary",
       text: 'Next',
       onclick: "nextQuestion()"
     })
@@ -158,6 +180,6 @@ function submitAnswers() {
    });
 }
 
-
-
-nextQuestion();
+$(document).ready(function() {
+  nextQuestion();
+})

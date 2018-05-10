@@ -21,16 +21,32 @@ get_results();
 function add_people() {
 
   $('.result_cont').empty();
+
+  //Create table
+  var table = $('<table>', {
+    class: "table table-striped table-sm"
+  })
+  //Create table headers append to table
+  var table_headers = $('<thead>', {
+    html: '<th scope="col">Name</th><th scope="col">Score</th><th scope="col">Your Answer</th>'
+  })
+  table.append(table_headers);
+  //Create table body and add to table
+  var table_body = $('<tbody>');
+  table.append(table_body);
+
+  //Create record and add to tbody
   for(var i=0;i<results.length;i++) {
     var person = results[i].username;
     var score = results[i].score;
+    var answer = results[i][surveyQuestions[question_counter].db];
+    var record = $('<tr>', {
+      html: '<th scope="row">'+person+'</th><td>'+score+'</td><td>'+answer+'</td>'
+    });
 
-    var list_of_people = $('<ul>', {
-      html: '<li><span class="person">'+person+'</span>---<span class="result">'+score+'</span></li>'
-    })
-
-    $('.result_cont').append(list_of_people);
+    table_body.append(record);
   }
+  $('.result_cont').append(table);
 }
 
 
@@ -42,7 +58,7 @@ function present_question(question) {
   // console.log(surveyQuestions[question_counter].p);
   $('.question_cont').empty();
 
-  var q = $('<p>',  {
+  var q = $('<h3>',  {
     text: question
   });
 
@@ -54,7 +70,7 @@ function present_question(question) {
   var revealAnswerBtn = $('<button>', {
     text: "Show Answer",
     onclick: "present_answer("+theAnswer+","+surveyQuestions[question_counter].p+","+property+")",
-    class: "showAnswerBtn"
+    class: "showAnswerBtn btn btn-info"
   })
 
   $('.question_cont').append(revealAnswerBtn);
@@ -70,15 +86,15 @@ function present_question(question) {
 
 
 function present_answer(answer, alotted_points, property) {
-
+  //remove "Show Answer" Button
   $('.showAnswerBtn').remove();
-  question_counter++;
 
-  var a = $('<p>',  {
+
+  //Display Answer
+  var a = $('<h2>',  {
     text: answer,
-    class: "answer"
+    class: "answer bg-info"
   });
-  //show answer
   $('.question_cont').append(a);
 
   //update everyones score
@@ -87,16 +103,31 @@ function present_answer(answer, alotted_points, property) {
       results[i].score += alotted_points;
     }
   }
-
-  var q = '"'+ surveyQuestions[question_counter].q + '"';
-  //add next button
-  var nextQuestionBtn = $('<button>',  {
-    text: "Next Question",
-    onclick: "present_question("+q+")"
-  });
-
-  $('.question_cont').append(nextQuestionBtn);
-
   add_people();
+  //Move to next question
+  question_counter++;
+  //If more questions
+  if(question_counter<surveyQuestions.length) {
+    //add next btn
+    var q = '"'+ surveyQuestions[question_counter].q + '"';
+    //add next button
+    var nextQuestionBtn = $('<button>',  {
+      text: "Next Question",
+      onclick: "present_question("+q+")",
+      class: "btn btn-primary"
+    });
+
+    $('.question_cont').append(nextQuestionBtn);
+  } else {
+    var finalQuestionBtn = $('<button>', {
+      text: "Final Question",
+      onclick: "present_question('What is the gender?')",
+      class: "btn btn-danger"
+    });
+
+    $('.question_cont').append(finalQuestionBtn);
+  }
+
+
 
 }
