@@ -19,7 +19,7 @@ get_results();
 
 
 function add_people() {
-
+  //remove current results
   $('.result_cont').empty();
 
   //Create table
@@ -39,7 +39,7 @@ function add_people() {
   for(var i=0;i<results.length;i++) {
     var person = results[i].username;
     var score = results[i].score;
-    var answer = results[i][surveyQuestions[question_counter].db];
+    var answer = (results[i][surveyQuestions[question_counter].db]) ? results[i][surveyQuestions[question_counter].db] : '';
     var record = $('<tr>', {
       html: '<th scope="row">'+person+'</th><td>'+score+'</td><td>'+answer+'</td>'
     });
@@ -53,20 +53,23 @@ function add_people() {
 
 
 //Present Question
-function present_question(question) {
-  // console.log(surveyQuestions[question_counter].a.a);
-  // console.log(surveyQuestions[question_counter].p);
+function present_question(question, addPeople) {
+
+  if(addPeople) {
+      add_people();
+  }
+  //remove current question
   $('.question_cont').empty();
 
+  //Create and add new question
   var q = $('<h3>',  {
     text: question
   });
-
   $('.question_cont').append(q);
 
+  //Create and add "Show Answer" Button
   var theAnswer = "'"+ surveyQuestions[question_counter].a.a + "'";
   var property = "'"+ surveyQuestions[question_counter].db + "'";
-
   var revealAnswerBtn = $('<button>', {
     text: "Show Answer",
     onclick: "present_answer("+theAnswer+","+surveyQuestions[question_counter].p+","+property+")",
@@ -113,7 +116,7 @@ function present_answer(answer, alotted_points, property) {
     //add next button
     var nextQuestionBtn = $('<button>',  {
       text: "Next Question",
-      onclick: "present_question("+q+")",
+      onclick: "present_question("+q+", true)",
       class: "btn btn-primary"
     });
 
@@ -121,7 +124,7 @@ function present_answer(answer, alotted_points, property) {
   } else {
     var finalQuestionBtn = $('<button>', {
       text: "Final Question",
-      onclick: "present_question('What is the gender?')",
+      onclick: "present_question('What is the gender?', false)",
       class: "btn btn-danger"
     });
 

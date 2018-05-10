@@ -1,0 +1,40 @@
+.survey_cont {
+  padding: 30px;
+}
+
+.next {
+  margin: 30px 0;
+}
+
+.get_info {
+  text-align: center;
+}
+
+.get_info input {
+  margin: 0  auto;
+}
+
+.pick {
+  margin: 20px 0;
+}
+
+.get_info_submit {
+  display: block;
+  margin: 20px auto;
+  width: 150px;
+}
+
+svg {
+  width: 150px;
+  margin: 0 50px;
+}
+
+.boy svg,
+.girl svg {
+  opacity: 0.5
+}
+
+.boy,
+.girl {
+  display: inline-block;
+}
